@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class IA : MonoBehaviour
+public class IAEnemy : MonoBehaviour
 {
     public Transform Player;
     private NavMeshAgent agent;
-    public Animator anim;
+    public GameObject ia;
+    private Animator anim;
+    public bool prueba = true;
     public float speed;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        prueba = true;
     }
 
     // Update is called once per frame
@@ -26,7 +29,8 @@ public class IA : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            //anim.SetBool("Walk", false);
+            
+            prueba = false;
             Debug.Log("Choco");
         }
     }
