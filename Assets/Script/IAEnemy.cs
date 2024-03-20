@@ -5,33 +5,80 @@ using UnityEngine.AI;
 
 public class IAEnemy : MonoBehaviour
 {
-    public Transform Player;
+    public Transform flag;
+    public Transform positionEnemy; 
     private NavMeshAgent agent;
     public GameObject ia;
     private Animator anim;
-    public bool prueba = true;
+    public bool destino = false;
     public float speed;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        prueba = true;
+        anim.SetBool("Walk", true);
+        
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        agent.destination = Player.position;
-        anim.SetBool("Walk", true);
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Player")
+        if(flag != null)
         {
-            
-            prueba = false;
-            Debug.Log("Choco");
+            agent.SetDestination(flag.position);
         }
+
+
+       
+
     }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            anim.SetBool("Walk", false);
+            agent.isStopped = true;
+            
+            Destroy(ia);
+            Invoke("ReStart", 1f);
+
+
+
+        }
+        if (collision.gameObject.tag == "Position")
+        {
+
+            anim.SetBool("Walk", false);
+            agent.isStopped = true;
+            Debug.Log("llego");
+        }
+
+
+    }
+    void ReStart()
+    {
+
+        anim.SetBool("Walk", true);
+        agent.destination = positionEnemy.position;
+        agent.isStopped = false;
+        
+        //agent.SetDestination(this.transform.position);
+        Debug.Log("reestart");
+    }
+
+
+    //       if(agent.isStopped)
+    //        {
+    //            agent.isStopped = false;
+    //            agent.destination = positionEnemy.position;
+    //        }
+    //       Debug.Log("el agente llego");
+
+    //       //agent.destination = positionEnemy.position;
+
+    //    }
+    //}
 }
